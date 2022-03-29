@@ -71,4 +71,9 @@
         </plugins>
     </build>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:manu310397/spring-rest-api</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
 </project>
