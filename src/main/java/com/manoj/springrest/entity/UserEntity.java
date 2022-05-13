@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,7 +28,7 @@ public class UserEntity implements Serializable {
     @Column(nullable=false, length=50)
     private String lastName;
 
-    @Column(nullable=false, length=120)
+    @Column(nullable=false, length=120, unique = true)
     private String email;
 
     @Column(nullable=false)
@@ -38,8 +39,8 @@ public class UserEntity implements Serializable {
     @Column(nullable=false)
     private Boolean emailVerificationStatus = false;
 
-//    @OneToMany(mappedBy="userDetails", cascade=CascadeType.ALL)
-//    private List<AddressEntity> addresses;
+    @OneToMany(mappedBy="userDetails", cascade=CascadeType.ALL)
+    private List<AddressEntity> addresses;
 //
 //    //Cascade.PERSIST - If User is deleted the ROLE remains
 //    @ManyToMany(cascade= {CascadeType.PERSIST}, fetch = FetchType.EAGER)

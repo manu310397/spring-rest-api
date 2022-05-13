@@ -5,13 +5,10 @@ import com.manoj.springrest.service.UserService;
 import com.manoj.springrest.ui.model.request.UserDetailsRequestModel;
 import com.manoj.springrest.ui.model.response.UserRest;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     UserService userService;
@@ -31,5 +28,10 @@ public class UserController {
         BeanUtils.copyProperties(savedUser, response);
 
         return response;
+    }
+
+    @GetMapping
+    public String getUser() {
+        return "Get user request";
     }
 }

@@ -1,7 +1,8 @@
 package com.manoj.springrest.service;
 
 import com.manoj.springrest.dto.UserDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     UserDTO createUser(UserDTO userDTO);
 }
