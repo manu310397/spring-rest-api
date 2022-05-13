@@ -17,8 +17,8 @@ import java.util.ArrayList;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository= null;
-    Utils utils = null;
+    UserRepository userRepository;
+    Utils utils;
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, Utils utils, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -47,6 +47,20 @@ public class UserServiceImpl implements UserService {
 
         return response;
     }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        UserDTO result = new UserDTO();
+
+        UserEntity userFromDB = userRepository.findByEmail(email);
+
+        if(userFromDB == null) throw new UsernameNotFoundException(email);
+
+        BeanUtils.copyProperties(userFromDB, result);
+
+        return result;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
