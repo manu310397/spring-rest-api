@@ -2,9 +2,11 @@ package com.manoj.springrest.service.impl;
 
 import com.manoj.springrest.dto.UserDTO;
 import com.manoj.springrest.entity.UserEntity;
+import com.manoj.springrest.exceptions.UserServiceException;
 import com.manoj.springrest.repository.UserRepository;
 import com.manoj.springrest.service.UserService;
 import com.manoj.springrest.shared.Utils;
+import com.manoj.springrest.ui.model.response.ErrorMessages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -78,6 +80,23 @@ public class UserServiceImpl implements UserService {
         if(entity == null) throw new UsernameNotFoundException(userId);
 
         BeanUtils.copyProperties(entity, result);
+
+        return result;
+    }
+
+    @Override
+    public UserDTO updateUser(String userId, UserDTO userDTO) {
+        UserDTO result = new UserDTO();
+        UserEntity entity = userRepository.findByUserId(userId);
+
+        if(entity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        entity.setFirstName(userDTO.getFirstName());
+        entity.setLastName(userDTO.getLastName());
+
+        UserEntity updatedUser = userRepository.save(entity);
+
+        BeanUtils.copyProperties(updatedUser, result);
 
         return result;
     }
