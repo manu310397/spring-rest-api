@@ -1,10 +1,13 @@
 package com.manoj.springrest.ui.controller;
 
 import com.manoj.springrest.dto.UserDTO;
+import com.manoj.springrest.exceptions.UserServiceException;
 import com.manoj.springrest.service.UserService;
 import com.manoj.springrest.ui.model.request.UserDetailsRequestModel;
+import com.manoj.springrest.ui.model.response.ErrorMessages;
 import com.manoj.springrest.ui.model.response.UserRest;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +20,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetailsRequestModel) {
+
+        if(userDetailsRequestModel.getLastName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+
         UserRest response = new UserRest();
 
         UserDTO userDTO = new UserDTO();
@@ -30,8 +36,14 @@ public class UserController {
         return response;
     }
 
-    @GetMapping
-    public String getUser() {
-        return "Get user request";
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public UserRest getUser(@PathVariable String id) {
+        UserRest response = new UserRest();
+
+        UserDTO userDTO = userService.getUserByUserId(id);
+
+        BeanUtils.copyProperties(userDTO, response);
+
+        return response;
     }
 }
