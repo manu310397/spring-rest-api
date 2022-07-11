@@ -1,7 +1,9 @@
 package com.manoj.springrest.entity;
 
+import com.manoj.springrest.dto.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,4 +51,10 @@ public class UserEntity implements Serializable {
 //            inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))
 //    private Collection<RoleEntity>roles;
 
+    public UserDTO toUserDTO() {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(this, userDTO);
+
+        return userDTO;
+    }
 }
