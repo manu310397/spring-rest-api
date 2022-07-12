@@ -34,7 +34,7 @@ public class Utils {
         return new String(returnValue);
     }
 
-    public static boolean hasTokenExpired(String token) {
+    public boolean hasTokenExpired(String token) {
         boolean returnValue = false;
 
         try {
@@ -60,14 +60,14 @@ public class Utils {
                 .compact();
         return token;
     }
-//
-//    public String generatePasswordResetToken(String userId)
-//    {
-//        String token = Jwts.builder()
-//                .setSubject(userId)
-//                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-//                .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
-//                .compact();
-//        return token;
-//    }
+
+    public String generatePasswordResetToken(String userId)
+    {
+        String token = Jwts.builder()
+                .setSubject(userId)
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
+                .compact();
+        return token;
+    }
 }

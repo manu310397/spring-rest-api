@@ -5,6 +5,8 @@ import com.manoj.springrest.dto.UserDTO;
 import com.manoj.springrest.exceptions.UserServiceException;
 import com.manoj.springrest.service.AddressesService;
 import com.manoj.springrest.service.UserService;
+import com.manoj.springrest.ui.model.request.PasswordResetModel;
+import com.manoj.springrest.ui.model.request.PasswordResetRequestModel;
 import com.manoj.springrest.ui.model.request.UserDetailsRequestModel;
 import com.manoj.springrest.ui.model.response.*;
 import org.modelmapper.ModelMapper;
@@ -145,6 +147,32 @@ public class UserController {
 
         if(isVerified) response.setOperationResult(RequestOperationStatus.SUCCESS.name());
         else response.setOperationResult(RequestOperationStatus.ERROR.name());
+
+        return response;
+    }
+
+    @PostMapping(path = "/password-reset-request")
+    public OperationStatusModel requestPasswordReset(@RequestBody PasswordResetRequestModel passwordResetRequestModel) {
+        OperationStatusModel response = new OperationStatusModel();
+
+        boolean result = userService.requestPasswordReset(passwordResetRequestModel.getEmail());
+
+        response.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+
+        if(result) response.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return response;
+    }
+
+    @PostMapping(path = "/password-reset")
+    public OperationStatusModel resetPassword(@RequestBody PasswordResetModel passwordResetModel) {
+        OperationStatusModel response = new OperationStatusModel();
+
+        boolean result = userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
+
+        response.setOperationName(RequestOperationName.RESET_PASSWORD.name());
+
+        if(result) response.setOperationResult(RequestOperationStatus.SUCCESS.name());
 
         return response;
     }

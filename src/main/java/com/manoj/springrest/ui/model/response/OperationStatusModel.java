@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OperationStatusModel {
-    private String operationResult;
+    private String operationResult = RequestOperationStatus.ERROR.name();
     private String operationName;
 }
