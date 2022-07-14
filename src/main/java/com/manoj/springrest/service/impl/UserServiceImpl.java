@@ -16,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,15 +33,18 @@ public class UserServiceImpl implements UserService {
     Utils utils;
     BCryptPasswordEncoder bCryptPasswordEncoder;
     PasswordResetTokenRepository passwordResetTokenRepository;
+    AmazonSES amazonSES;
 
     public UserServiceImpl(UserRepository userRepository,
                            Utils utils,
                            BCryptPasswordEncoder bCryptPasswordEncoder,
-                           PasswordResetTokenRepository passwordResetTokenRepository) {
+                           PasswordResetTokenRepository passwordResetTokenRepository,
+                           AmazonSES amazonSES) {
         this.userRepository = userRepository;
         this.utils = utils;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.amazonSES = amazonSES;
     }
 
     @Override
@@ -75,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
         UserDTO response = mapper.map(savedUser, UserDTO.class);
 
-        new AmazonSES().sendVerificationEmail(response);
+        amazonSES.sendVerificationEmail(response);
 
         return response;
     }
@@ -191,7 +193,7 @@ public class UserServiceImpl implements UserService {
         passwordResetTokenEntity.setUserDetails(entity);
         passwordResetTokenRepository.save(passwordResetTokenEntity);
 
-        return new AmazonSES().sendPasswordResetRequest(entity.getFirstName(), entity.getEmail(), passwordResetToken);
+        return amazonSES.sendPasswordResetRequest(entity.getFirstName(), entity.getEmail(), passwordResetToken);
 
     }
 
