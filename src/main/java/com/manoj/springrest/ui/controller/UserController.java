@@ -9,6 +9,9 @@ import com.manoj.springrest.ui.model.request.PasswordResetModel;
 import com.manoj.springrest.ui.model.request.PasswordResetRequestModel;
 import com.manoj.springrest.ui.model.request.UserDetailsRequestModel;
 import com.manoj.springrest.ui.model.response.*;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
@@ -86,6 +89,10 @@ public class UserController {
         return response;
     }
 
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "authorization", value = "Bearer JWT token", paramType = "header")
+    )
+    @ApiOperation(value = "Get User Details Web service end point")
     @GetMapping
     public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "25") int limit) {
         List<UserRest> response;

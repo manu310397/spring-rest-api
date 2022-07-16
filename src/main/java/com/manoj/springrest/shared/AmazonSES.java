@@ -53,8 +53,8 @@ public class AmazonSES {
     public AmazonSES() {
         // You can also set your keys this way. And it will work!
         //comment this while committing
-        System.setProperty("aws.accessKeyId", "AKIAQ6C6WCJHNJ42MSVQ");
-        System.setProperty("aws.secretKey", "T9DpmrneL86I4t18UdJ/EeSNF03iAAL0fiOMKNc7");
+//        System.setProperty("aws.accessKeyId", "AKIAQ6C6WCJHNJ42MSVQ");
+//        System.setProperty("aws.secretKey", "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");
     }
 
     public void sendVerificationEmail(UserDTO userDto) {
